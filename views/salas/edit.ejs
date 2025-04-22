@@ -1,0 +1,9 @@
+<h1>Editar Salas</h1>
+<form action="/salas/edit/<%= sala.id %>" method="POST">
+    <div class="form-group">
+        <label for="nome">Sala</label>
+        <input type="text" class="form-control" id="nome" name="nome"
+            value="<%= salas.nome %>" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Sala</button>
+</form>
