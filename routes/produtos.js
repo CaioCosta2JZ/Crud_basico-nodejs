@@ -8,6 +8,7 @@ router.get("/", async (req, res) => {
     const produtos = await Produto.findAll({
       include: [{ model: Categoria, as: "Categoria" }],
     });
+
     res.render("base", {
       title: "Produtos",
       view: "produtos/show",
@@ -81,11 +82,7 @@ router.post("/edit/:id", async (req, res) => {
     const { nome, valor, categoriaId } = req.body;
     const produto = await Produto.findByPk(id);
     if (produto) {
-      await produto.update({
-        nome,
-        valor,
-        categoriaId,
-      });
+      await produto.update({ nome, valor, categoriaId });
       res.redirect("/produtos");
     } else {
       res.status(404).send("Produto não encontrado");

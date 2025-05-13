@@ -1,23 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-    const Aluno = sequelize.define('Aluno', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        nome: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }
-    }, {
-        tableName: 'aluno',
-        freezeTableName: true
+  const Aluno = sequelize.define("Aluno", {
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    telefone: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  });
+
+  Aluno.associate = (models) => {
+    Aluno.belongsTo(models.Curso, {
+      foreignKey: "cursoId",
+      as: "Curso",
     });
-    
-    Aluno.associate = (models) => {
-         Aluno.belongsTo (models.Curso, {foreignKey: "cursoId", as: "Curso,"});
+  };
 
-    }
-
-    return Aluno;
+  return Aluno;
 };

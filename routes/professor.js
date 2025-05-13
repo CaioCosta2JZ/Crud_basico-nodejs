@@ -1,60 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const { Professor } = require('../models');
+const {Professor} = require('../models');
 
-// listar professores
 router.get("/", async (req, res) => {
     const professores = await Professor.findAll();
     res.render(
-        "base",{
-            title: "Professores",
-            view: "professor/show",
-            professores
-        });
+        "base", {
+        title: "Listar Professores",
+        view: "professores/show",
+        professores,
+        }
+    );
 });
 
-//adicionar categoria - form
 router.get("/add", async (req, res) => {
-    res.render(
-        "base",{
-            title: "Add professor",
-            view: "professor/add",
-        });
+  res.render(
+    "base",
+    {
+      title: "Add Professores",
+      view: "professores/add",
+    }
+  );
 });
 
-//adicionar categoria - bd
 router.post("/add", async (req, res) => {
-    await Professor.create({
-        nome: req.body.nome,
-    });
-    res.redirect("/professor");
-});
-
-//Editar categoria - form
-router.get("/edit/:id", async (req, res) => {
-    const professor = await Professor.findByPk(req.params.id);
-    res.render(
-        "base",{
-            title: "Edit professor",
-            view: "professor/edit",
-            professor
-        });
-});
-
-//editar categoria - bd
-router.post("/edit/:id", async (req, res) => {
-    await Professor.update({
-        nome: req.body.nome,
-    }, {
-        where: {id: req.params.id},
-    });
-    res.redirect("/professor");
-});
-
-// Deletar categoria
-router.post("/delete/:id",  async (req, res) => {
-    await Professor.destroy({ where: { id: req.params.id } });
-    res.redirect("/professor");
+  await Professor.create({
+    nome: req.body.nome,
+    cpf: req.body.cpf
   });
-  
-  module.exports = router;
+  res.redirect("/professores");
+});
+
+router.get("/edit/:id", async (req, res) => {
+  const professor = await Professor.findByPk(req.params.id); 
+  res.render(
+    "base",
+    {
+      title: "edit Professores",
+      view: "professores/edit",
+      professor,
+    }
+  );
+});
+
+router.post("/edit/:id", async (req, res) => {
+  await Professor.update(
+    {
+      nome: req.body.nome,
+      cpf: req.body.cpf
+    },
+    {
+      where: { id: req.params.id }
+    }
+  );
+  res.redirect("/professores");
+});
+
+router.post("/delete/:id", async(req, res) =>{
+  await Professor.destroy({where:{id: req.params.id}});
+  res.redirect("/professores")
+});
+
+module.exports = router;
